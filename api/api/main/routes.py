@@ -6,7 +6,7 @@ from api.main import bp
 import time
 
 
-@bp.route('/time')
+@bp.route('/api/time')
 def get_current_time():
     return jsonify(time=time.time())
 
