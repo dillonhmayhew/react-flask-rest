@@ -21,3 +21,20 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# ignore all log files
+*.log
+
+# ignore virtual environment
+venv/
+
+# ignore
+__pycache__/
+*.pyc
+*~
+
+.idea/
+.vscode
+
+.env
