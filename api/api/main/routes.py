@@ -3,6 +3,12 @@ from flask import jsonify, abort, request, g
 from api.models import User, Task
 from api.utils.helpers import make_public_task, make_public_user
 from api.main import bp
+import time
+
+
+@bp.route('/time')
+def get_current_time():
+    return jsonify(time=time.time())
 
 
 @bp.route('/api/token')
