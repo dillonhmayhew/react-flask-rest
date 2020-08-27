@@ -123,8 +123,8 @@ def get_task(task_id):
     task = Task.query.get(task_id)
     if task is None:
         abort(404)
-    # if task.author != g.user:
-    #     abort(401)
+    if task.author != g.user:
+        abort(401)
     
     return jsonify(task=make_public_task(task.serialize()))
 

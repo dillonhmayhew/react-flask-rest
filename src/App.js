@@ -1,24 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
+import {
+  BrowserRouter as Router, 
+  Route,
+  Switch,
+  Link
+} from 'react-router-dom';
 import './App.css';
 
-function App() {
-  // const [Token, setToken] = useState('');
-  let [Tasks, setTasks] = useState({
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <h1>Hello, React.js! - from Flask</h1>
+        </div>
+        <Switch>
+          <Route exact path="/task/:taskID" component={Task} />
+        </Switch>
+      </Router>
+    );
+  }
+}
+
+const Task = ({match, location}) => {
+  const {params: {taskID}} = match;
+
+  let [Task, setTask] = useState({
     uri: "",
     title: "",
     done: false,
     description: ""
   });
 
-  // useEffect(() => {
-  //   fetch('/api/token').then(res => res.json()).then(data => {
-  //     setToken(data.token);
-  //   });
-  // }, []);
-
   useEffect(() => {
-    fetch('/api/tasks/1').then(res => res.json()).then(data => {
-      setTasks({
+    fetch('/api/tasks/'+taskID).then(res => res.json()).then(data => {
+      setTask({
         uri: data.task.uri,
         title: data.task.title,
         done: String(data.task.done),
@@ -28,14 +48,14 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Hello, React.js! - from Flask</h1>
-        {/* <p>Your token is <code>{Token}</code>.</p> */}
-        {
-        Object.keys(Tasks).map((key, index) => ( 
-          <p><b>{key}</b>: {Tasks[key]}</p> 
+    <div>
+      {
+        Object.keys(Task).map((key, index) => (
+          <p key={index}>
+            <b>{key}</b>: {Task[key]}
+          </p>
         ))
-        }
+      }
     </div>
   );
 }
