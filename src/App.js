@@ -14,7 +14,7 @@ class App extends React.Component {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/task/:taskID" component={Task} />
+          <Route path="/tasks/:taskID" component={Task} />
         </Switch>
       </Router>
     );
