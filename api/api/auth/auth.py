@@ -16,4 +16,4 @@ def verify_password(username_or_token, password):
 
 @auth_.error_handler
 def unauthorized_access():
-    return make_response(jsonify(error='Unauthorized Access')), 401
+    return make_response(jsonify(error='Unauthorized Access', status=401)), 401

@@ -16,10 +16,3 @@ div {
 .App-link {
   color: #61dafb;
 }
-
-code {
-  box-shadow: 1px 1px 5px rgb(172, 172, 172);
-  background-color: rgb(222, 222, 222);
-  font: 13px Courier;
-  color: rgb(44, 44, 44);
-}

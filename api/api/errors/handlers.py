@@ -3,16 +3,16 @@ from api.errors import bp
 
 @bp.app_errorhandler(404)
 def not_found(error):
-    return make_response(jsonify(error='Not Found'), 404)
+    return make_response(jsonify(error='Not Found', status=404), 404)
 
 @bp.app_errorhandler(400)
 def bad_request(error):
-    return make_response(jsonify(error='Bad Request'), 400)
+    return make_response(jsonify(error='Bad Request', status=400), 400)
 
 @bp.app_errorhandler(405)
 def method_not_allowed(error):
-    return make_response(jsonify(error='Method Not Allowed'), 405)
+    return make_response(jsonify(error='Method Not Allowed', status=405), 405)
 
 @bp.app_errorhandler(401)
 def unauthorized_access(error):
-    return make_response(jsonify(error='Unauthorized Access')), 401
+    return make_response(jsonify(error='Unauthorized Access', status=401)), 401

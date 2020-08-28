@@ -1,24 +1,41 @@
 import React from 'react';
 import {
-  BrowserRouter as Router, 
-  Route,
-  Switch
+	BrowserRouter as Router, 
+	Route,
+	Switch,
+	withRouter
 } from 'react-router-dom';
-import Task from './components/Task';
-import Header from './components/Header';
+import {
+	Task,
+	Header 
+} from './components';
+import { 
+	BadRequest,
+	Unauthorized,
+	NotFound,
+	MethodNotAllowed
+} from './components/errors'
 import './App.css';
 
+
 class App extends React.Component {
-  render() {
-    return (
-      <Router>
-        <Header />
-        <Switch>
-          <Route path="/tasks/:taskID" component={Task} />
-        </Switch>
-      </Router>
-    );
-  }
+	render() {
+		return (
+			<Router>
+				<Switch>
+					<Route path="/400" component={BadRequest} />
+					<Route path="/401" component={Unauthorized} />
+					<Route path="/404" component={NotFound} />
+					<Route path="/405" component={MethodNotAllowed} />
+					<>
+						<Header />
+						<Route path="/tasks/:taskID" component={Task} />
+						<Route path="/" />
+					</>
+				</Switch>
+			</Router>
+		);
+	}
 }
 
-export default App;
+export default withRouter(App);
