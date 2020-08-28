@@ -21,7 +21,7 @@ import './App.css';
 class App extends React.Component {
 	render() {
 		return (
-			<Router>
+			<>
 				<Switch>
 					<Route path="/400" component={BadRequest} />
 					<Route path="/401" component={Unauthorized} />
@@ -33,7 +33,7 @@ class App extends React.Component {
 						<Route path="/" />
 					</>
 				</Switch>
-			</Router>
+			</>
 		);
 	}
 }

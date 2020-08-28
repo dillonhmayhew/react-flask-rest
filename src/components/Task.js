@@ -1,10 +1,16 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import { Redirect } from 'react-router-dom';
+import { TaskForm } from './forms'
 
-const Task = ({match, location}) => {
+const Task = ({match}) => {
     const {params: {taskID}} = match;
+  
+    const [task, setTask] = useState([{}]);
+    const [errorStatus, setErrorStatus] = useState(0);
+    // const [method, setMethod] = useState('GET');
+
     const columns = [
         {
             Header: "Title",
@@ -24,16 +30,8 @@ const Task = ({match, location}) => {
         }
     ]
   
-    const [task, setTask] = useState([{
-        title: "",
-        done: false,
-        description: ""
-    }]);
-
-    const [errorStatus, setErrorStatus] = useState(0);
-  
     useEffect(() => {
-        fetch('/api/tasks/'+taskID, {
+        fetch(`/api/tasks/${taskID}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -53,11 +51,24 @@ const Task = ({match, location}) => {
     if (errorStatus) return <Redirect to={`/${errorStatus}`} />;
   
     return (
-        <ReactTable 
-            columns={columns} 
-            data={task}>
-        </ReactTable>
+        <>
+            <TaskForm />
+            <ReactTable 
+                columns={columns} 
+                data={task}>
+            </ReactTable>
+            <button 
+                type="button"
+                onClick={() => alert("CLICKED")}
+            >
+                Click Me!
+            </button>
+        </>
     );
+}
+
+const useHTTPMethod = (id, method) => {
+    return [method, id];
 }
 
 export default Task;
