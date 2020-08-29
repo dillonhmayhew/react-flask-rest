@@ -1,5 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import {
+    Form,
+    Button 
+} from 'react-bootstrap';
 
 class TaskForm extends React.Component {
     constructor(props) {
@@ -45,8 +49,8 @@ class TaskForm extends React.Component {
         if (this.state.success) return <Redirect to={`/tasks/${this.props.taskID}`} />;
 
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>Title: </label>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Label>Title: </Form.Label>
                 <input 
                     type='text'
                     name='title' 
@@ -54,12 +58,12 @@ class TaskForm extends React.Component {
                     defaultValue={this.props.title}
                     onChange={this.handleChange}
                 />
-                <label>Done: </label>
+                <Form.Label>Done: </Form.Label>
                 <select name='done' value={this.props.done} onChange={this.handleChange}>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
-                <label>Description: </label>
+                <Form.Label>Description: </Form.Label>
                 <textarea
                     type='text' 
                     name='description'
@@ -67,8 +71,8 @@ class TaskForm extends React.Component {
                     defaultValue={this.props.description}
                     onChange={this.handleChange}
                 />
-                <button type='submit'>{this.props.bText}</button>
-            </form>
+                <Button variant='primary' type='submit'>{this.props.bText}</Button>
+            </Form>
         )
     }
 }
