@@ -1,10 +1,9 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import {
-    Form,
-    Button,
-    Col
-} from 'react-bootstrap';
+// import { Redirect } from 'react-router-dom'
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+// import Alert from 'react-bootstrap/Alert';
 
 class TaskForm extends React.Component {
     constructor(props) {
@@ -16,9 +15,6 @@ class TaskForm extends React.Component {
             errorStatus: null,
             success: false
         }
-        // this.titleInput = React.createRef();
-        // this.doneInput = React.createRef();
-        // this.descrInput = React.createRef();
     }
     handleChange = (e) => {
         let nam = e.target.name;
@@ -51,9 +47,11 @@ class TaskForm extends React.Component {
 
     render() {
         // if (this.state.errorStatus) return <Redirect to={`/${this.state.errorStatus}`} />;
-        // if (this.state.success) return <Redirect to={`/tasks/${this.props.taskID}`} />;
+        // if (this.state.success) return <Redirect to={`/tasks/${this.props.taskID}`}  />;
 
         return (
+            <>
+            {/* {this.state.success && <Alert variant='success'>Task <b>{this.props.taskID}</b> has been updated!</Alert>} */}
             <Form onSubmit={this.handleSubmit} id='TaskForm'>
                 <Form.Row>
                     <Col xs={3}>
@@ -92,6 +90,7 @@ class TaskForm extends React.Component {
                 </Form.Row>
                 <Button variant='primary' type='submit'>{this.props.bText}</Button>
             </Form>
+            </>
         )
     }
 }
