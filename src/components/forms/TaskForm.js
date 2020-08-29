@@ -46,6 +46,7 @@ class TaskForm extends React.Component {
 
         return (
             <form onSubmit={this.handleSubmit}>
+                <label>Title: </label>
                 <input 
                     type='text'
                     name='title' 
@@ -53,14 +54,13 @@ class TaskForm extends React.Component {
                     defaultValue={this.props.title}
                     onChange={this.handleChange}
                 />
-                <input 
-                    type='text' 
-                    name='done'
-                    // ref={this.doneInput}
-                    defaultValue={this.props.done}
-                    onChange={this.handleChange}
-                />
-                <input 
+                <label>Done: </label>
+                <select name='done' value={this.props.done} onChange={this.handleChange}>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <label>Description: </label>
+                <textarea
                     type='text' 
                     name='description'
                     // ref={this.descrInput}
