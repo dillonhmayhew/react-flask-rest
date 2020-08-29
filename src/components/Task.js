@@ -16,19 +16,28 @@ const Task = ({match}) => {
             Header: "Title",
             accessor: "title",
             width: 250,
-            sortable: false
+            sortable: false,
+            style:{
+                textAlign: "center"
+            },
         },
         {
             Header: "Done",
             accessor: "done",
             width: 100,
             sortable: false,
-            resizable: false
+            resizable: false,
+            style:{
+                textAlign: "center"
+            },
         },
         {
             Header: "Description",
             accessor: "description",
-            sortable: false
+            sortable: false,
+            style:{
+                textAlign: "center"
+            },
         }
     ]
   
@@ -70,10 +79,6 @@ const Task = ({match}) => {
             />
         </>
     );
-}
-
-const useHTTPMethod = (id, method) => {
-    return [method, id];
 }
 
 export default Task;
