@@ -13,7 +13,7 @@ const TaskForm = (props) => {
     const [success, setSuccess] = useState(false);
 
     const handleSubmit = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         fetch(`/api/tasks/${props.taskID}`, {
             method: props.method,
             headers: {'Content-Type': 'application/json'},
@@ -29,6 +29,7 @@ const TaskForm = (props) => {
                 setErrorStatus(data.status);
             } else {
                 setSuccess(true);
+                props.handler();
             }
         });
     };
