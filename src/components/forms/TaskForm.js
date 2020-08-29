@@ -2,7 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import {
     Form,
-    Button 
+    Button,
+    Col
 } from 'react-bootstrap';
 
 class TaskForm extends React.Component {
@@ -50,27 +51,34 @@ class TaskForm extends React.Component {
 
         return (
             <Form onSubmit={this.handleSubmit}>
-                <Form.Label>Title: </Form.Label>
-                <input 
-                    type='text'
-                    name='title' 
-                    // ref={this.titleInput}
-                    defaultValue={this.props.title}
-                    onChange={this.handleChange}
-                />
-                <Form.Label>Done: </Form.Label>
-                <select name='done' value={this.props.done} onChange={this.handleChange}>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                </select>
-                <Form.Label>Description: </Form.Label>
-                <textarea
-                    type='text' 
-                    name='description'
-                    // ref={this.descrInput}
-                    defaultValue={this.props.description}
-                    onChange={this.handleChange}
-                />
+                <Form.Row>
+                    <Form.Group as={Col} controlId='titleInput'>
+                        <Form.Label>Title </Form.Label>
+                        <Form.Control 
+                            type='text'
+                            name='title' 
+                            // ref={this.titleInput}
+                            defaultValue={this.props.title}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId='doneSelect'>
+                        <Form.Label>Done </Form.Label>
+                        <Form.Control as='select' name='done' value={this.props.done} onChange={this.handleChange}>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </Form.Control>
+                        </Form.Group>
+                    <Form.Group as={Col} controlId='textAreaInput'>
+                        <Form.Label>Description </Form.Label>
+                        <Form.Control as='textarea'
+                            name='description'
+                            rows='3'
+                            defaultValue={this.props.description}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                </Form.Row>
                 <Button variant='primary' type='submit'>{this.props.bText}</Button>
             </Form>
         )
