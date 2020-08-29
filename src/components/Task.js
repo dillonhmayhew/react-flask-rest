@@ -15,12 +15,14 @@ const Task = ({match}) => {
         {
             Header: "Title",
             accessor: "title",
-            width: 250
+            width: 250,
+            sortable: false
         },
         {
             Header: "Done",
             accessor: "done",
             width: 100,
+            sortable: false,
             resizable: false
         },
         {
@@ -52,17 +54,20 @@ const Task = ({match}) => {
   
     return (
         <>
-            <TaskForm />
+            <TaskForm 
+                taskID={taskID}
+                title={task[0].title} 
+                done={task[0].done} 
+                description={task[0].description} 
+                bText='Update'
+                method='PUT'
+            />
             <ReactTable 
                 columns={columns} 
-                data={task}>
-            </ReactTable>
-            <button 
-                type="button"
-                onClick={() => alert("CLICKED")}
-            >
-                Click Me!
-            </button>
+                data={task}
+                showPagination={false}
+                defaultPageSize={task.length}
+            />
         </>
     );
 }

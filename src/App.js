@@ -1,9 +1,7 @@
 import React from 'react';
 import {
-	BrowserRouter as Router, 
 	Route,
-	Switch,
-	withRouter
+	Switch
 } from 'react-router-dom';
 import {
 	Task,
@@ -38,4 +36,4 @@ class App extends React.Component {
 	}
 }
 
-export default withRouter(App);
+export default App;
