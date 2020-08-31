@@ -22,7 +22,8 @@ const Tasks = (props) => {
         showModal[key] = false;
         setShowModal(showModal);
     }
-	
+    
+    var c = 0;
 	const columns = [
 		{
 			Header: "Title",
@@ -56,26 +57,28 @@ const Tasks = (props) => {
 			resizable: false,
 			style:{
 				textAlign: "center"
-		},
-		Cell: () => {
-			return (
-				<>
-				<Button variant='outline-dark' onClick={() => {
-					openEditModal();
-				}}
-				>Edit</Button>
-				<Button variant='outline-light' onClick={(e)=> {
-					alert("DELETE");    // deleteTask(e);
-				}}
-				>Delete</Button>
-				</>
-				)},
-				width: 150,
-				maxWidth: 150,
-				minWidth: 150
-			}
-		]
-		
+            },
+            Cell: () => {
+                return (
+                    <>
+                    <Button id={c} variant='outline-dark' onClick={(e) => {
+                        // console.log(e.target.id);
+                        openEditModal(e.target.id);
+                    }}
+                    >Edit</Button>
+                    <Button id={c++} variant='outline-light' onClick={(e)=> {
+                        console.log(e.target.id);    // deleteTask(e);
+                    }}
+                    >Delete</Button>
+                    </>
+                )
+            },
+            width: 150,
+            maxWidth: 150,
+            minWidth: 150
+        }
+    ]
+
 	const formProps = {
 		id: 0,
 		title: '', 
@@ -84,9 +87,9 @@ const Tasks = (props) => {
 		// handlerForm: handleForm,
 		// formError: childErrorStatus
     }
-    
-    const formPropsList = [];
+     
     // const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([key, value], i) => [key, fn(value, key, i)]));
+    const formPropsList = [];
     var obj = {};
     for (var i=0; i<tasks.length; i++) {
         for (var j=0; j<4; j++) {
@@ -96,16 +99,14 @@ const Tasks = (props) => {
         obj = {};
     }
 
-    console.log(showModal);
+    // pre processing
     for (var i=0; i<tasks.length; i++) {
-        showModal[tasks[i].uri] = false;
+        showModal[tasks[i].id] = false;
     }
-    console.log(showModal);
 	
-	// const modalProps = {
-	// 	showModal: showModal,
-	// 	handlerModal: closeEditModal
-	// }
+	const modalProps = {
+		handlerModal: closeEditModal
+	}
 	
 	// GET data from API
 	useEffect(() => {
@@ -140,13 +141,21 @@ const Tasks = (props) => {
 	// 		}
 	// 	});
     // }
+
+    const items = [];
+    for (var i=0; i<tasks.length; i++) {
+        if (showModal[tasks[i].id]) {
+            items.push(<TaskForm {...modalProps} {...formPropsList[i]} />)
+        }
+    }
+
 	
 	if (errorStatus) return <Redirect to={`/${errorStatus}`} />;
 	if (deleted) return <Redirect to='/tasks' />;
 			
 	return (
 		<>
-			{/* {showModal && <TaskForm {...modalProps} {...formProps} />} */}
+			{showModal['1'] && <TaskForm {...modalProps} {...formPropsList[1]} />}
 			<ReactTable 
 			columns={columns} 
 			data={tasks}

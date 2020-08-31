@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 const TaskForm = (props) => {
 	// Modal
-	const [show, setShow] = useState(props.showModal);
+	const [show, setShow] = useState(true);
 
 	// Form
     const [title, setTitle] = useState(props.title);
