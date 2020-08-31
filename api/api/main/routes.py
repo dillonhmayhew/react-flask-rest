@@ -37,6 +37,7 @@ def get_user(username):
 
 
 @bp.route('/api/users', methods=['POST'])
+@auth_.login_required
 def create_user():
     if not request.json:
         abort(400)

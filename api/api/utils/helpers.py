@@ -13,7 +13,8 @@ def make_public_user(user):
         if field == 'id':
             user_tasks = User.query.get(user['id']).tasks.all()
             new_user['tasks'] = len(user_tasks)
-            new_user['uri'] = url_for('main.get_user', username=user['username'], _external=True)
+            new_user[field] = user[field]
+            # new_user['uri'] = url_for('main.get_user', username=user['username'], _external=True)
         else:
             new_user[field] = user[field]
 
@@ -28,8 +29,8 @@ def make_public_task(task):
             continue
         if field == 'author':
             continue
-        if field == 'id':
-            new_task['uri'] = url_for('main.get_task', task_id=task['id'], _external=True)
+        # if field == 'id':
+        #     new_task['uri'] = url_for('main.get_task', task_id=task['id'], _external=True)
         else:
             new_task[field] = task[field]
 
