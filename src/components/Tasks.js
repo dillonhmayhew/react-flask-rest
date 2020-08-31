@@ -5,26 +5,29 @@ import { Redirect } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { TaskForm } from './forms';
 
-const Task = (props) => {
-	const {params: {taskID}} = props.match;
-	
-	const [task, setTask] = useState([{}]);
+const Tasks = (props) => {
+    const [tasks, setTasks] = useState([]);
 	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useState({});
 	
 	const handleForm = () => setUpdated(true);
 	const childErrorStatus = (err) => setErrorStatus(err)
-	const openEditModal = () => setShowModal(true);
-	const closeEditModal = () => setShowModal(false);
+	const openEditModal = (key) => {
+        showModal[key] = true;
+        setShowModal(showModal);
+    }
+	const closeEditModal = (key) => {
+        showModal[key] = false;
+        setShowModal(showModal);
+    }
 	
 	const columns = [
 		{
 			Header: "Title",
 			accessor: "title",
 			width: 250,
-			sortable: false,
 			style:{
 				textAlign: "center"
 			},
@@ -33,7 +36,6 @@ const Task = (props) => {
 			Header: "Done",
 			accessor: "done",
 			width: 100,
-			sortable: false,
 			resizable: false,
 			style:{
 				textAlign: "center"
@@ -42,7 +44,6 @@ const Task = (props) => {
 		{
 			Header: "Description",
 			accessor: "description",
-			sortable: false,
 			resizable: false,
 			style:{
 				textAlign: "center"
@@ -76,24 +77,39 @@ const Task = (props) => {
 		]
 		
 	const formProps = {
-		taskID: taskID,
-		title: task[0].title, 
-		done: task[0].done, 
-		description: task[0].description, 
-		bText: 'Update',
-		method: 'PUT',
-		handlerForm: handleForm,
-		formError: childErrorStatus
-	}
+		id: 0,
+		title: '', 
+		done: '', 
+		description: ''
+		// handlerForm: handleForm,
+		// formError: childErrorStatus
+    }
+    
+    const formPropsList = [];
+    // const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([key, value], i) => [key, fn(value, key, i)]));
+    var obj = {};
+    for (var i=0; i<tasks.length; i++) {
+        for (var j=0; j<4; j++) {
+            obj[[Object.keys(formProps)[j]]] = Object.values(tasks[i])[j];
+        }
+        formPropsList.push(obj);
+        obj = {};
+    }
+
+    console.log(showModal);
+    for (var i=0; i<tasks.length; i++) {
+        showModal[tasks[i].uri] = false;
+    }
+    console.log(showModal);
 	
-	const modalProps = {
-		showModal: showModal,
-		handlerModal: closeEditModal
-	}
+	// const modalProps = {
+	// 	showModal: showModal,
+	// 	handlerModal: closeEditModal
+	// }
 	
 	// GET data from API
 	useEffect(() => {
-		fetch(`/api/tasks/${taskID}`, {
+		fetch(`/api/tasks`, {
 			method: 'GET'
 		})
 		.then(res => res.json())
@@ -101,44 +117,43 @@ const Task = (props) => {
 			if (data.error) {
 				setErrorStatus(data.status);
 			} else {
-				data.task.done = String(data.task.done);
-				setTask([data.task]);
+                data.tasks.forEach((task) => task.done = String(task.done));
+				setTasks(data.tasks);
 				setUpdated(false);
 				setDeleted(false);
 			}
 		});
-	}, [taskID, updated, deleted]);
-	
+    }, [updated, deleted]);
+
 	// DELETE Task
-	const deleteTask = (e) => {
-		e.preventDefault();
-		fetch(`/api/tasks/${taskID}`, {
-			method: 'DELETE'
-		})
-		.then(res => res.json())
-		.then(data => {
-			if (data.error) {
-				setErrorStatus(data.status);
-			} else {
-				setDeleted(data.result);
-			}
-		});
-	}
+	// const deleteTask = (e) => {
+	// 	e.preventDefault();
+	// 	fetch(`/api/tasks/${taskID}`, {
+	// 		method: 'DELETE'
+	// 	})
+	// 	.then(res => res.json())
+	// 	.then(data => {
+	// 		if (data.error) {
+	// 			setErrorStatus(data.status);
+	// 		} else {
+	// 			setDeleted(data.result);
+	// 		}
+	// 	});
+    // }
 	
 	if (errorStatus) return <Redirect to={`/${errorStatus}`} />;
 	if (deleted) return <Redirect to='/tasks' />;
 			
 	return (
 		<>
-			{showModal && <TaskForm {...modalProps} {...formProps} />}
+			{/* {showModal && <TaskForm {...modalProps} {...formProps} />} */}
 			<ReactTable 
 			columns={columns} 
-			data={task}
-			showPagination={false}
-			defaultPageSize={task.length}
+			data={tasks}
+			defaultPageSize={10}
 			/>
 		</>
 	);
 }
 
-export default Task;
+export default Tasks;

@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import {
 	Task,
+	Tasks,
 	Header 
 } from './components';
 import { 
@@ -26,7 +27,8 @@ const App = () => {
 				<Route path="/405" component={MethodNotAllowed} />
 				<>
 					<Header />
-					<Route path="/tasks/:taskID" component={Task} />
+					<Route path="/tasks/:taskID" render={(props) => <Task {...props} />} />
+					<Route exact path="/tasks" render={(props) => <Tasks {...props} />} />
 					<Route path="/" />
 				</>
 			</Switch>

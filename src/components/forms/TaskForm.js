@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
 
-const TaskFormModal = (props) => {
+const TaskForm = (props) => {
 	// Modal
 	const [show, setShow] = useState(props.showModal);
 
@@ -25,7 +25,7 @@ const TaskFormModal = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
         fetch(`/api/tasks/${props.taskID}`, {
-            method: props.method,
+            method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 title: title,
@@ -107,4 +107,4 @@ const TaskFormModal = (props) => {
 		);
 }
 
-export default TaskFormModal;
+export default TaskForm;
