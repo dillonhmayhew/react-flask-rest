@@ -6,7 +6,7 @@ import { TaskForm } from './forms';
 
 // global list of original row indices of results
 // this allows me to keep track of what task is where in my table
-window.rowIndices = [];
+// window.rowIndices = [];
 
 const Tasks = (props) => {
     const [tasks, setTasks] = useState([]);
@@ -76,33 +76,33 @@ const Tasks = (props) => {
 	tasks.forEach((task) => formPropsDict[String(task.id)] = task);
 
 	// generate TaskForm with correct props
-	const renderForm = () => {
+	const renderUpdateForm = () => {
 		if (showModal.open) {
 			return <TaskForm {...formPropsDict[showModal.selected]} {...formProps} />
 		}
 	}
-	const createForm = () => {
+	const renderCreateForm = () => {
 		if (showCreate) {
 			return <TaskForm {...formProps} create={true} />
 		}
 	}
 
-	// user clicked table head to sort, so reset list of row indices to empty
-	window.onload = () => {
-		const headers = document.getElementsByClassName('rt-th');
-		for (var i=0; i<3; i++) {
-			headers[i].addEventListener('click', () => {
-				window.rowIndices = [];
-			});
-		}
-	}
-	// set row indices list to keep track of sorting
-	const getRowIndices = (state, rowInfo) => {
-		if(rowInfo) {
-			window.rowIndices.push(rowInfo.index);
-		}
-		return {}
-	}
+	// // user clicked table head to sort, so reset list of row indices to empty
+	// window.onload = () => {
+	// 	const headers = document.getElementsByClassName('rt-th');
+	// 	for (var i=0; i<3; i++) {
+	// 		headers[i].addEventListener('click', () => {
+	// 			window.rowIndices = [];
+	// 		});
+	// 	}
+	// }
+	// // set row indices list to keep track of sorting
+	// const getRowIndices = (state, rowInfo) => {
+	// 	if(rowInfo) {
+	// 		window.rowIndices.push(rowInfo.index);
+	// 	}
+	// 	return {}
+	// }
 	
 	// counter for button ids to correspond with correct task
     var c = 0;
@@ -110,6 +110,7 @@ const Tasks = (props) => {
 		{
 			Header: "Title",
 			accessor: "title",
+			sortable: false,
 			width: 250,
 			style:{
 				textAlign: "center"
@@ -119,6 +120,7 @@ const Tasks = (props) => {
 			Header: "Done",
 			accessor: "done",
 			width: 100,
+			sortable: false,
 			resizable: false,
 			style:{
 				textAlign: "center"
@@ -127,6 +129,7 @@ const Tasks = (props) => {
 		{
 			Header: "Description",
 			accessor: "description",
+			sortable: false,
 			resizable: false,
 			style:{
 				textAlign: "center"
@@ -134,7 +137,6 @@ const Tasks = (props) => {
 		},
 		{
 			Header: "Actions",
-			filterable: false,
 			sortable: false,
 			resizable: false,
 			style:{
@@ -143,14 +145,15 @@ const Tasks = (props) => {
             Cell: () => {
                 return (
                     <>
-                    <Button id={tasks[window.rowIndices[c%tasks.length]].id} variant='outline-dark' onClick={(e) => {
-						// console.log(e.target.id);
+                    <Button id={tasks[c%tasks.length].id} variant='outline-dark' onClick={(e) => {
+						console.log(e.target.id);
 						// console.log(window.rowIndices);
                         openUpdateModal(e.target.id);
                     }}
                     >Edit</Button>
-                    <Button id={tasks[window.rowIndices[c++%tasks.length]].id} variant='outline-light' onClick={(e)=> {
-                        deleteTask(e, e.target.id);
+                    <Button id={tasks[c++%tasks.length].id} variant='outline-light' onClick={(e)=> {
+						console.log(e.target.id);
+						deleteTask(e, e.target.id);
                     }}
                     >Delete</Button>
                     </>
@@ -163,21 +166,22 @@ const Tasks = (props) => {
 	]
 
 	if (errorStatus) window.location.pathname = `/${errorStatus}`;
+	if (created) window.location.reload();
 			
 	return (
 		<>
-			{renderForm()}
+			<Button variant='outline-dark' onClick={() => {
+				openCreateModal();
+			}} block
+			>Create Task</Button>
+			{renderCreateForm()}
+			{renderUpdateForm()}
 			<ReactTable 
 			columns={columns} 
 			data={tasks}
-			defaultPageSize={10}
-			getTrProps={getRowIndices}
+			showPagination={false}
+			// getTrProps={getRowIndices}
 			/>
-			<Button variant='outline-dark' onClick={() => {
-				openCreateModal();
-			}}
-			>Create Task</Button>
-			{createForm()}
 		</>
 	);
 }

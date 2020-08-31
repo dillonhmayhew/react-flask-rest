@@ -17,6 +17,7 @@ const TaskForm = (props) => {
 	// Modal
 	const handleClose = () => {
 		setShow(false);
+		props.create ? props.closeCreateHandler() : props.closeUpdateHandler();
 	}
 
 	// Form
@@ -38,9 +39,8 @@ const TaskForm = (props) => {
             } else {
                 props.updateHandler();
             }
-        });
-		// allow animation to happen before Task Component hides it
-		setTimeout(() => props.closeUpdateHandler(), 750);
+		});
+		handleClose();
 	};
 
 	// CREATE TASK
@@ -62,9 +62,8 @@ const TaskForm = (props) => {
             } else {
                 props.createHandler();
             }
-        });
-		// allow animation to happen before Task Component hides it
-		setTimeout(() => props.closeCreateHandler(), 750);
+		});
+		handleClose();
     };
 
     const getDone = () => {
@@ -119,7 +118,7 @@ const TaskForm = (props) => {
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="secondary" onClick={props.create ? props.closeCreateHandler() : props.closeUpdateHandler()}>
+				<Button variant="secondary" onClick={handleClose}>
 				Close
 				</Button>
 				<Button variant="primary" onClick={props.create ? createTask : handleSubmit}>

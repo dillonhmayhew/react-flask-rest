@@ -13,19 +13,19 @@ const Task = (props) => {
 	const [updated, setUpdated] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	
-	const handleForm = () => setUpdated(true);
+	const handleUpdate = () => setUpdated(true);
 	const childErrorStatus = (err) => setErrorStatus(err)
-	const openEditModal = () => setShowModal(true);
-	const closeEditModal = () => setShowModal(false);
+	const openUpdateModal = () => setShowModal(true);
+	const closeUpdateModal = () => setShowModal(false);
 		
 	const formProps = {
 		id: taskID,
 		title: task[0].title, 
 		done: task[0].done, 
 		description: task[0].description,
-		handlerForm: handleForm,
-		formError: childErrorStatus,
-		handlerModal: closeEditModal
+		updateHandler: handleUpdate,
+		errorHandler: childErrorStatus,
+		closeUpdateHandler: closeUpdateModal
 	}
 	
 	// GET data from API
@@ -103,7 +103,7 @@ const Task = (props) => {
 				return (
 					<>
 					<Button variant='outline-dark' onClick={() => {
-						openEditModal();
+						openUpdateModal();
 					}}
 					>Edit</Button>
 					<Button variant='outline-light' onClick={(e)=> {
