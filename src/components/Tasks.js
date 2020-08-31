@@ -13,17 +13,24 @@ const Tasks = (props) => {
 	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
+	const [created, setCreated] = useState(false);
 	const [showModal, setShowModal] = useState({open: false, selected: ''});
+	const [showCreate, setShowCreate] = useState(false);
 	
-	const handleForm = () => setUpdated(true);
+	const handleCreate = () => setCreated(true);
+	const handleUpdate = () => setUpdated(true);
 	const childErrorStatus = (err) => setErrorStatus(err)
-	const openEditModal = (i) => setShowModal({open: true, selected: i});
-	const closeEditModal = () => setShowModal({open: false, selected: ''});
+	const openUpdateModal = (i) => setShowModal({open: true, selected: i});
+	const closeUpdateModal = () => setShowModal({open: false, selected: ''});
+	const openCreateModal = () => setShowCreate(true);
+	const closeCreateModal = () => setShowCreate(false);
 
-	const funcProps = {
-		handlerForm: handleForm,
-		formError: childErrorStatus,
-		handlerModal: closeEditModal
+	const formProps = {
+		createHandler: handleCreate,
+		updateHandler: handleUpdate,
+		errorHandler: childErrorStatus,
+		closeUpdateHandler: closeUpdateModal,
+		closeCreateHandler: closeCreateModal
 	}
 	
 	// GET data from API
@@ -38,13 +45,12 @@ const Tasks = (props) => {
 			} else {
                 data.tasks.forEach((task) => task.done = String(task.done));
 				setTasks(data.tasks);
+				setCreated(false);
 				setUpdated(false);
 				setDeleted(false);
 			}
 		});
-	}, [updated, deleted]);
-	
-	// CREATE TASK
+	}, [created, updated, deleted]);
 	
 	// DELETE Task
 	const deleteTask = (e, id) => {
@@ -72,9 +78,15 @@ const Tasks = (props) => {
 	// generate TaskForm with correct props
 	const renderForm = () => {
 		if (showModal.open) {
-			return <TaskForm {...formPropsDict[showModal.selected]} {...funcProps} />
+			return <TaskForm {...formPropsDict[showModal.selected]} {...formProps} />
 		}
 	}
+	const createForm = () => {
+		if (showCreate) {
+			return <TaskForm {...formProps} create={true} />
+		}
+	}
+
 	// user clicked table head to sort, so reset list of row indices to empty
 	window.onload = () => {
 		const headers = document.getElementsByClassName('rt-th');
@@ -134,7 +146,7 @@ const Tasks = (props) => {
                     <Button id={tasks[window.rowIndices[c%tasks.length]].id} variant='outline-dark' onClick={(e) => {
 						// console.log(e.target.id);
 						// console.log(window.rowIndices);
-                        openEditModal(e.target.id);
+                        openUpdateModal(e.target.id);
                     }}
                     >Edit</Button>
                     <Button id={tasks[window.rowIndices[c++%tasks.length]].id} variant='outline-light' onClick={(e)=> {
@@ -161,6 +173,11 @@ const Tasks = (props) => {
 			defaultPageSize={10}
 			getTrProps={getRowIndices}
 			/>
+			<Button variant='outline-dark' onClick={() => {
+				openCreateModal();
+			}}
+			>Create Task</Button>
+			{createForm()}
 		</>
 	);
 }

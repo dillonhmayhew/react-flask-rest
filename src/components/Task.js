@@ -22,10 +22,7 @@ const Task = (props) => {
 		id: taskID,
 		title: task[0].title, 
 		done: task[0].done, 
-		description: task[0].description
-	}
-
-	const funcProps = {
+		description: task[0].description,
 		handlerForm: handleForm,
 		formError: childErrorStatus,
 		handlerModal: closeEditModal
@@ -127,7 +124,7 @@ const Task = (props) => {
 			
 	return (
 		<>
-			{showModal && <TaskForm {...funcProps} {...formProps} />}
+			{showModal && <TaskForm {...formProps} />}
 			<ReactTable 
 			columns={columns} 
 			data={task}

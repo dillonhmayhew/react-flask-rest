@@ -17,8 +17,6 @@ const TaskForm = (props) => {
 	// Modal
 	const handleClose = () => {
 		setShow(false);
-		// allow animation to happen before Task Component hides it
-		setTimeout(() => props.handlerModal(), 750);
 	}
 
 	// Form
@@ -36,13 +34,39 @@ const TaskForm = (props) => {
         .then(res => res.json())
         .then(data => {
             if (data.error) {
-                props.formError(data.status);
+                props.errorHandler(data.status);
             } else {
-                props.handlerForm();
+                props.updateHandler();
             }
         });
-		handleClose();
+		// allow animation to happen before Task Component hides it
+		setTimeout(() => props.closeUpdateHandler(), 750);
+	};
+
+	// CREATE TASK
+	const createTask = (e) => {
+		e.preventDefault();
+        fetch(`/api/tasks`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                title: title,
+                done: getDone(),
+                description: description
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                props.errorHandler(data.status);
+            } else {
+                props.createHandler();
+            }
+        });
+		// allow animation to happen before Task Component hides it
+		setTimeout(() => props.closeCreateHandler(), 750);
     };
+
     const getDone = () => {
         return done === undefined ? (props.done === 'true' ? true : false) : (done === 'true' ? true : false);
     }
@@ -51,7 +75,7 @@ const TaskForm = (props) => {
 		<>
 		<Modal show={show} onHide={handleClose} size='lg' aria-labelledby="task-modal-vcenter" centered>
 			<Modal.Header closeButton>
-			<Modal.Title>Update Task <b>{props.id}</b></Modal.Title>
+			<Modal.Title>{props.create ? 'Create Task' : 'Update Task '}<b>{props.id}</b></Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form id='TaskForm'>
@@ -95,10 +119,10 @@ const TaskForm = (props) => {
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="secondary" onClick={handleClose}>
+				<Button variant="secondary" onClick={props.create ? props.closeCreateHandler() : props.closeUpdateHandler()}>
 				Close
 				</Button>
-				<Button variant="primary" onClick={handleSubmit}>
+				<Button variant="primary" onClick={props.create ? createTask : handleSubmit}>
 				Save Changes
 				</Button>
 			</Modal.Footer>
