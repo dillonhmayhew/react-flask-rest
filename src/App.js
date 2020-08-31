@@ -13,7 +13,7 @@ import {
 	Unauthorized,
 	NotFound,
 	MethodNotAllowed
-} from './components/errors'
+} from './components/errors';
 import './App.css';
 
 

@@ -1,26 +1,98 @@
 import React, { useState, useEffect } from 'react';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
-import { Redirect } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { TaskForm } from './forms';
+
+// global list of original row indices of results
+// this allows me to keep track of what task is where in my table
+window.rowIndices = [];
 
 const Tasks = (props) => {
     const [tasks, setTasks] = useState([]);
 	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
-	const [showModal, setShowModal] = useState({open: false, selected: null});
+	const [showModal, setShowModal] = useState({open: false, selected: ''});
 	
 	const handleForm = () => setUpdated(true);
 	const childErrorStatus = (err) => setErrorStatus(err)
-	const openEditModal = (i) => {
-		setShowModal({open: true, selected: i});
-    }
-	const closeEditModal = () => {
-        setShowModal({open: false, selected: null});
-    }
-    
+	const openEditModal = (i) => setShowModal({open: true, selected: i});
+	const closeEditModal = () => setShowModal({open: false, selected: ''});
+
+	const funcProps = {
+		handlerForm: handleForm,
+		formError: childErrorStatus,
+		handlerModal: closeEditModal
+	}
+	
+	// GET data from API
+	useEffect(() => {
+		fetch(`/api/tasks`, {
+			method: 'GET'
+		})
+		.then(res => res.json())
+		.then(data => {
+			if (data.error) {
+				setErrorStatus(data.status);
+			} else {
+                data.tasks.forEach((task) => task.done = String(task.done));
+				setTasks(data.tasks);
+				setUpdated(false);
+				setDeleted(false);
+			}
+		});
+	}, [updated, deleted]);
+	
+	// CREATE TASK
+	
+	// DELETE Task
+	const deleteTask = (e, id) => {
+		e.preventDefault();
+		fetch(`/api/tasks/${id}`, {
+			method: 'DELETE'
+		})
+		.then(res => res.json())
+		.then(data => {
+			if (data.error) {
+				setErrorStatus(data.status);
+			} else {
+				setDeleted(data.result);
+			}
+		});
+	}
+	 
+	/* PREPROCCESSING */
+	// compile dict of Props, so that the correct Props can be supplied to the TaskForm
+	// {taskID: taskObj}
+    // const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([key, value], i) => [key, fn(value, key, i)]));
+    const formPropsDict = {};
+	tasks.forEach((task) => formPropsDict[String(task.id)] = task);
+
+	// generate TaskForm with correct props
+	const renderForm = () => {
+		if (showModal.open) {
+			return <TaskForm {...formPropsDict[showModal.selected]} {...funcProps} />
+		}
+	}
+	// user clicked table head to sort, so reset list of row indices to empty
+	window.onload = () => {
+		const headers = document.getElementsByClassName('rt-th');
+		for (var i=0; i<3; i++) {
+			headers[i].addEventListener('click', () => {
+				window.rowIndices = [];
+			});
+		}
+	}
+	// set row indices list to keep track of sorting
+	const getRowIndices = (state, rowInfo) => {
+		if(rowInfo) {
+			window.rowIndices.push(rowInfo.index);
+		}
+		return {}
+	}
+	
+	// counter for button ids to correspond with correct task
     var c = 0;
 	const columns = [
 		{
@@ -59,13 +131,14 @@ const Tasks = (props) => {
             Cell: () => {
                 return (
                     <>
-                    <Button id={c} variant='outline-dark' onClick={(e) => {
-                        // console.log(e.target.id);
+                    <Button id={tasks[window.rowIndices[c%tasks.length]].id} variant='outline-dark' onClick={(e) => {
+						// console.log(e.target.id);
+						// console.log(window.rowIndices);
                         openEditModal(e.target.id);
                     }}
                     >Edit</Button>
-                    <Button id={c++} variant='outline-light' onClick={(e)=> {
-                        console.log(e.target.id);    // deleteTask(e);
+                    <Button id={tasks[window.rowIndices[c++%tasks.length]].id} variant='outline-light' onClick={(e)=> {
+                        deleteTask(e, e.target.id);
                     }}
                     >Delete</Button>
                     </>
@@ -75,73 +148,9 @@ const Tasks = (props) => {
             maxWidth: 150,
             minWidth: 150
         }
-    ]
+	]
 
-	const formProps = {
-		id: 0,
-		title: '', 
-		done: '', 
-		description: ''
-	}
-	const formFuncProps = {
-		handlerForm: handleForm,
-		formError: childErrorStatus
-	}
-     
-    // const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([key, value], i) => [key, fn(value, key, i)]));
-    const formPropsList = [];
-    var obj = {};
-    for (var i=0; i<tasks.length; i++) {
-        for (var j=0; j<4; j++) {
-            obj[[Object.keys(formProps)[j]]] = Object.values(tasks[i])[j];
-        }
-        formPropsList.push(obj);
-        obj = {};
-    }
-
-    // pre processing
-    // for (var i=0; i<tasks.length; i++) {
-    //     showModal[tasks[i].id] = false;
-    // }
-	
-	const modalProps = {
-		showModal: showModal.open,
-		handlerModal: closeEditModal
-	}
-	
-	// GET data from API
-	useEffect(() => {
-		fetch(`/api/tasks`, {
-			method: 'GET'
-		})
-		.then(res => res.json())
-		.then(data => {
-			if (data.error) {
-				setErrorStatus(data.status);
-			} else {
-                data.tasks.forEach((task) => task.done = String(task.done));
-				setTasks(data.tasks);
-				setUpdated(false);
-				setDeleted(false);
-			}
-		});
-    }, [updated, deleted]);
-
-	// const items = [];
-    // for (var i=0; i<tasks.length; i++) {
-    //     if (showModal[tasks[i].id]) {
-    //         items.push(<TaskForm {...modalProps} {...formPropsList[i]} />)
-    //     }
-    // }
-
-	const renderForm = () => {
-		if (showModal.open) {
-			return <TaskForm {...modalProps} {...formPropsList[showModal.selected]} {...formFuncProps} />
-		}
-	}
-
-	if (errorStatus) return <Redirect to={`/${errorStatus}`} />;
-	if (deleted) return <Redirect to='/tasks' />;
+	if (errorStatus) window.location.pathname = `/${errorStatus}`;
 			
 	return (
 		<>
@@ -150,6 +159,7 @@ const Tasks = (props) => {
 			columns={columns} 
 			data={tasks}
 			defaultPageSize={10}
+			getTrProps={getRowIndices}
 			/>
 		</>
 	);

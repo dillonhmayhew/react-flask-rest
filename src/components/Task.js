@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
-import { Redirect } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { TaskForm } from './forms';
 
@@ -18,76 +17,17 @@ const Task = (props) => {
 	const childErrorStatus = (err) => setErrorStatus(err)
 	const openEditModal = () => setShowModal(true);
 	const closeEditModal = () => setShowModal(false);
-	
-	const columns = [
-		{
-			Header: "Title",
-			accessor: "title",
-			width: 250,
-			sortable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Done",
-			accessor: "done",
-			width: 100,
-			sortable: false,
-			resizable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Description",
-			accessor: "description",
-			sortable: false,
-			resizable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Actions",
-			filterable: false,
-			sortable: false,
-			resizable: false,
-			style:{
-				textAlign: "center"
-		},
-		Cell: () => {
-			return (
-				<>
-				<Button variant='outline-dark' onClick={() => {
-					openEditModal();
-				}}
-				>Edit</Button>
-				<Button variant='outline-light' onClick={(e)=> {
-					alert("DELETE");    // deleteTask(e);
-				}}
-				>Delete</Button>
-				</>
-				)},
-				width: 150,
-				maxWidth: 150,
-				minWidth: 150
-			}
-		]
 		
 	const formProps = {
-		taskID: taskID,
+		id: taskID,
 		title: task[0].title, 
 		done: task[0].done, 
-		description: task[0].description, 
-		bText: 'Update',
-		method: 'PUT',
-		handlerForm: handleForm,
-		formError: childErrorStatus
+		description: task[0].description
 	}
-	
-	const modalProps = {
-		showModal: showModal,
+
+	const funcProps = {
+		handlerForm: handleForm,
+		formError: childErrorStatus,
 		handlerModal: closeEditModal
 	}
 	
@@ -125,12 +65,69 @@ const Task = (props) => {
 		});
 	}
 	
-	if (errorStatus) return <Redirect to={`/${errorStatus}`} />;
-	if (deleted) return <Redirect to='/tasks' />;
+	const columns = [
+		{
+			Header: "Title",
+			accessor: "title",
+			width: 250,
+			sortable: false,
+			style:{
+				textAlign: "center"
+			},
+		},
+		{
+			Header: "Done",
+			accessor: "done",
+			width: 100,
+			sortable: false,
+			resizable: false,
+			style:{
+				textAlign: "center"
+			},
+		},
+		{
+			Header: "Description",
+			accessor: "description",
+			sortable: false,
+			resizable: false,
+			style:{
+				textAlign: "center"
+			},
+		},
+		{
+			Header: "Actions",
+			filterable: false,
+			sortable: false,
+			resizable: false,
+			style:{
+				textAlign: "center"
+			},
+			Cell: () => {
+				return (
+					<>
+					<Button variant='outline-dark' onClick={() => {
+						openEditModal();
+					}}
+					>Edit</Button>
+					<Button variant='outline-light' onClick={(e)=> {
+						deleteTask(e);
+					}}
+					>Delete</Button>
+					</>
+				)
+			},
+			width: 150,
+			maxWidth: 150,
+			minWidth: 150
+		}
+	]
+	
+	if (errorStatus) window.location.pathname = `/${errorStatus}`;
+	if (deleted) window.location.pathname = '/tasks';
 			
 	return (
 		<>
-			{showModal && <TaskForm {...modalProps} {...formProps} />}
+			{showModal && <TaskForm {...funcProps} {...formProps} />}
 			<ReactTable 
 			columns={columns} 
 			data={task}

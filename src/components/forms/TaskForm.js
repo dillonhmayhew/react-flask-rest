@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 const TaskForm = (props) => {
 	// Modal
-	const [show, setShow] = useState(props.showModal);
+	const [show, setShow] = useState(true);
 
 	// Form
     const [title, setTitle] = useState(props.title);
@@ -51,7 +51,7 @@ const TaskForm = (props) => {
 		<>
 		<Modal show={show} onHide={handleClose} size='lg' aria-labelledby="task-modal-vcenter" centered>
 			<Modal.Header closeButton>
-			<Modal.Title>Update Task <b>{props.taskID}</b></Modal.Title>
+			<Modal.Title>Update Task <b>{props.id}</b></Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form id='TaskForm'>
