@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 const TaskForm = (props) => {
 	// Modal
-	const [show, setShow] = useState(true);
+	const [show, setShow] = useState(props.showModal);
 
 	// Form
     const [title, setTitle] = useState(props.title);
@@ -18,13 +18,13 @@ const TaskForm = (props) => {
 	const handleClose = () => {
 		setShow(false);
 		// allow animation to happen before Task Component hides it
-		setTimeout(() => props.handlerModal(), 1000);
+		setTimeout(() => props.handlerModal(), 750);
 	}
 
 	// Form
 	const handleSubmit = (e) => {
 		e.preventDefault();
-        fetch(`/api/tasks/${props.taskID}`, {
+        fetch(`/api/tasks/${props.id}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
