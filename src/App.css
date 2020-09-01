@@ -1,3 +1,7 @@
-div#header {
-  text-align: center;
+div#header1 {
+  text-align: left;
+}
+
+div#header2 {
+  text-align: right;
 }

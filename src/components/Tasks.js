@@ -170,7 +170,7 @@ const Tasks = (props) => {
 			
 	return (
 		<>
-			<Button variant='outline-dark' onClick={() => {
+			<Button variant='dark' onClick={() => {
 				openCreateModal();
 			}} block
 			>Create Task</Button>
@@ -182,6 +182,10 @@ const Tasks = (props) => {
 			showPagination={false}
 			// getTrProps={getRowIndices}
 			/>
+			<Button variant='dark' onClick={() => {
+				openCreateModal();
+			}} block
+			>Create Task</Button>
 		</>
 	);
 }
