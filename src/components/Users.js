@@ -157,7 +157,7 @@ const Users = (props) => {
 	]
 
 	if (errorStatus) window.location.pathname = `/${errorStatus}`;
-	if (created) window.location.reload();
+	// if (created) window.location.reload();
 			
 	return (
 		<>

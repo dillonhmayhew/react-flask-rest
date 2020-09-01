@@ -143,8 +143,10 @@ const Tasks = (props) => {
 				textAlign: "center"
             },
             Cell: () => {
-                return (
-                    <>
+                return (	
+					// tasks[window.rowIndices[c%tasks.length]].id
+					// tasks[c%tasks.length].id
+                    <> 
                     <Button id={tasks[c%tasks.length].id} variant='outline-dark' onClick={(e) => {
 						// console.log(window.rowIndices);
                         openUpdateModal(e.target.id);
@@ -164,7 +166,7 @@ const Tasks = (props) => {
 	]
 
 	if (errorStatus) window.location.pathname = `/${errorStatus}`;
-	if (created) window.location.reload();
+	// if (created) window.location.reload();
 			
 	return (
 		<>
