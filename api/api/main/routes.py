@@ -6,9 +6,9 @@ from api.main import bp
 import time
 
 
-@bp.route('/api/time')
-def get_current_time():
-    return jsonify(time=round(time.time()))
+@bp.route('/api/logout')
+def logout():
+    abort(401)
 
 
 @bp.route('/api/token')
