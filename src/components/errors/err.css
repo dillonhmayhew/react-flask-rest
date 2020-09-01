@@ -9,7 +9,7 @@
     text-align: center;
 }
 
-.err {
+.err, .redirect {
 	  display: table-cell;
 	  vertical-align: middle;
 }
@@ -20,7 +20,13 @@
       color: #888;
 	  display: inline-block;
 	  padding-right: 12px;
+}
+.err h1:first-child {
 	  animation: type .5s alternate infinite;
+}
+
+.err h1:last-child {
+    font-size: 150px;
 }
 
 @keyframes type {

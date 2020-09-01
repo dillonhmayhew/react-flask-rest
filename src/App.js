@@ -8,7 +8,8 @@ import {
 	Tasks,
 	User,
 	Users,
-	Header 
+	Header,
+	Logout
 } from './components';
 import { 
 	BadRequest,
@@ -27,6 +28,7 @@ const App = () => {
 				<Route path="/401" component={Unauthorized} />
 				<Route path="/404" component={NotFound} />
 				<Route path="/405" component={MethodNotAllowed} />
+				<Route path="/logout" component={Logout} />
 				<>
 					<Header />
 					<Route path="/tasks/:taskID" render={(props) => <Task {...props} />} />

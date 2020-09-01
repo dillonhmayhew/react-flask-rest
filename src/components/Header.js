@@ -10,12 +10,12 @@ const Header = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="#token">Token</Nav.Link>
                     <Nav.Link href="/users">Users</Nav.Link>
                     <Nav.Link href="/tasks">Tasks</Nav.Link>
                 </Nav>
                 <Nav className="ml-auto">
-                    <Nav.Link href="#logout">Logout</Nav.Link>
+                    <Nav.Link href="#token">Token</Nav.Link>
+                    <Nav.Link href="/logout">Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Navbar>

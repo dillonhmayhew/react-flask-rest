@@ -6,12 +6,12 @@ from api.main import bp
 import time
 
 
-@bp.route('/api/logout')
+@bp.route('/api/logout', methods=['GET'])
 def logout():
     abort(401)
 
 
-@bp.route('/api/token')
+@bp.route('/api/token', methods=['GET'])
 @auth_.login_required
 def get_auth_token():
     token = g.user.generate_auth_token(600)
