@@ -122,7 +122,7 @@ const TaskForm = (props) => {
 				Close
 				</Button>
 				<Button variant="primary" onClick={props.create ? createTask : handleSubmit}>
-				Save Changes
+				{props.create ? 'Create' : 'Save Changes'}
 				</Button>
 			</Modal.Footer>
 		</Modal>

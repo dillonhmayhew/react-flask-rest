@@ -172,7 +172,7 @@ const Tasks = (props) => {
 		<>
 			<Button variant='dark' onClick={() => {
 				openCreateModal();
-			}} block
+			}} id='createTask'
 			>Create Task</Button>
 			{renderCreateForm()}
 			{renderUpdateForm()}
@@ -181,11 +181,8 @@ const Tasks = (props) => {
 			data={tasks}
 			showPagination={false}
 			// getTrProps={getRowIndices}
+			// defaultPageSize={100}
 			/>
-			<Button variant='dark' onClick={() => {
-				openCreateModal();
-			}} block
-			>Create Task</Button>
 		</>
 	);
 }

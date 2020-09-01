@@ -5,3 +5,8 @@ div#header1 {
 div#header2 {
   text-align: right;
 }
+
+Button#createTask {
+  display: flex;
+  margin-left: auto;
+}
