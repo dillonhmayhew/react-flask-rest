@@ -54,7 +54,7 @@ const Users = (props) => {
 	// DELETE USER
 	const deleteTask = (e, id) => {
 		e.preventDefault();
-		fetch(`/api/users/${formPropsDict.id.username}`, {
+		fetch(`/api/users/${id}`, {
 			method: 'DELETE'
 		})
 		.then(res => res.json())
@@ -89,6 +89,16 @@ const Users = (props) => {
 	// counter for button ids to correspond with correct task
     var c = 0;
 	const columns = [
+        {
+			Header: "ID",
+			accessor: "id",
+			width: 100,
+			sortable: false,
+			resizable: false,
+			style:{
+				textAlign: "center"
+			},
+		},
 		{
 			Header: "Username",
 			accessor: "username",

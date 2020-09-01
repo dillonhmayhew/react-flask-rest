@@ -23,11 +23,11 @@ const UserForm = (props) => {
 	// Form
 	const handleSubmit = (e) => {
 		e.preventDefault();
-        fetch(`/api/users/${props.username}`, {
+        fetch(`/api/users/${props.id}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                usermame: username,
+                username: username,
                 email: email,
                 passwd: passwd
             })

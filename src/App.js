@@ -31,7 +31,7 @@ const App = () => {
 					<Header />
 					<Route path="/tasks/:taskID" render={(props) => <Task {...props} />} />
 					<Route exact path="/tasks" render={(props) => <Tasks {...props} />} />
-					<Route path="/users/:username" render={(props) => <User {...props} />} />
+					<Route path="/users/:userID" render={(props) => <User {...props} />} />
 					<Route exact path="/users" render={(props) => <Users {...props} />} />
 					<Route path="/" />
 				</>

@@ -26,10 +26,10 @@ def get_users():
     return jsonify(users=[make_public_user(user) for user in users])
 
 
-@bp.route('/api/users/<username>', methods=['GET'])
+@bp.route('/api/users/<int:user_id>', methods=['GET'])
 @auth_.login_required
-def get_user(username):
-    user = User.query.filter_by(username=username).first()
+def get_user(user_id):
+    user = User.query.get(user_id)
     if user is None:
         abort(404)
     
@@ -60,10 +60,10 @@ def create_user():
     return jsonify(user=make_public_user(user.serialize())), 201
 
 
-@bp.route('/api/users/<username>', methods=['PUT'])
+@bp.route('/api/users/<int:user_id>', methods=['PUT'])
 @auth_.login_required
-def update_user(username):
-    user = User.query.filter_by(username=username).first()
+def update_user(user_id):
+    user = User.query.get(user_id)
     if user is None:
         abort(404)
     if user != g.user:
@@ -71,7 +71,6 @@ def update_user(username):
     if not request.json:
         abort(400)
     if 'username' in request.json and type(request.json['username']) is not str:
-        print("here")
         abort(400)
     if 'email' in request.json and type(request.json['email']) is not str:
         abort(400)
@@ -82,7 +81,8 @@ def update_user(username):
     user.email = request.json.get('email', user.email)
 
     if 'passwd' in request.json:
-        user.set_password(request.json['passwd'])
+        if request.json['passwd'] != '':
+            user.set_password(request.json['passwd'])
 
     db.session.add(user)
     db.session.commit()
@@ -90,10 +90,10 @@ def update_user(username):
     return jsonify(user=make_public_user(user.serialize()))
 
 
-@bp.route('/api/users/<username>', methods=['DELETE'])
+@bp.route('/api/users/<int:user_id>', methods=['DELETE'])
 @auth_.login_required
-def delete_user(username):
-    user = User.query.filter_by(username=username).first()
+def delete_user(user_id):
+    user = User.query.get(user_id)
     if user is None:
         abort(404)
     if user != g.user:
@@ -138,7 +138,8 @@ def create_task():
     
     user = g.user
     task = Task(title=request.json['title'],
-                description=request.json.get('description', ''), author=user)
+                description=request.json.get('description', ''),
+                done=request.json.get('done', False), author=user)
     
     db.session.add(task)
     db.session.commit()
