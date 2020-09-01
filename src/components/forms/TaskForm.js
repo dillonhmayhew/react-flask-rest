@@ -127,7 +127,7 @@ const TaskForm = (props) => {
 			</Modal.Footer>
 		</Modal>
 		</>
-		);
+	);
 }
 
 export default TaskForm;
