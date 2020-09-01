@@ -64,7 +64,7 @@ const User = (props) => {
         {
 			Header: "ID",
 			accessor: "id",
-			// width: 100,
+			width: 100,
 			sortable: false,
 			resizable: false,
 			style:{
