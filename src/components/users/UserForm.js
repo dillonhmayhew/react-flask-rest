@@ -65,10 +65,6 @@ const UserForm = (props) => {
 		});
 		handleClose();
     };
-
-    // const getDone = () => {
-    //     return done === undefined ? (props.done === 'true' ? true : false) : (done === 'true' ? true : false);
-    // }
 	
 	return (
 		<>

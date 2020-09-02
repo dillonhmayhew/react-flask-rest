@@ -4,9 +4,6 @@ import 'react-table/react-table.css';
 import Button from 'react-bootstrap/Button';
 import { TaskForm } from './';
 
-// global list of original row indices of results
-// this allows me to keep track of what task is where in my table
-// window.rowIndices = [];
 
 const Tasks = (props) => {
 	const { errorHandler } = props;
@@ -85,23 +82,6 @@ const Tasks = (props) => {
 			return <TaskForm {...formProps} create={true} {...props} />
 		}
 	}
-
-	// // user clicked table head to sort, so reset list of row indices to empty
-	// window.onload = () => {
-	// 	const headers = document.getElementsByClassName('rt-th');
-	// 	for (var i=0; i<3; i++) {
-	// 		headers[i].addEventListener('click', () => {
-	// 			window.rowIndices = [];
-	// 		});
-	// 	}
-	// }
-	// // set row indices list to keep track of sorting
-	// const getRowIndices = (state, rowInfo) => {
-	// 	if(rowInfo) {
-	// 		window.rowIndices.push(rowInfo.index);
-	// 	}
-	// 	return {}
-	// }
 	
 	// counter for button ids to correspond with correct task
     var c = 0;
@@ -142,12 +122,9 @@ const Tasks = (props) => {
 				textAlign: "center"
             },
             Cell: () => {
-                return (	
-					// tasks[window.rowIndices[c%tasks.length]].id
-					// tasks[c%tasks.length].id
+                return (
                     <> 
                     <Button id={tasks[c%tasks.length].id} variant='outline-dark' onClick={(e) => {
-						// console.log(window.rowIndices);
                         openUpdateModal(e.target.id);
                     }}
                     >Edit</Button>

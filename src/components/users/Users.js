@@ -4,10 +4,6 @@ import 'react-table/react-table.css';
 import Button from 'react-bootstrap/Button';
 import { UserForm } from './';
 
-// global list of original row indices of results
-// this allows me to keep track of what task is where in my table
-// window.rowIndices = [];
-
 const Users = (props) => {
 	const { errorHandler } = props;
 
@@ -154,9 +150,6 @@ const Users = (props) => {
             minWidth: 150
         }
 	]
-
-	
-	// if (created) window.location.reload();
 			
 	return (
 		<>
