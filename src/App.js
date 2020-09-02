@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Task, Tasks } from './components/tasks'
 import { User, Users } from './components/users'
-import { Header, Logout, Token } from './components';
-// import { BadRequest, Unauthorized, NotFound, MethodNotAllowed } from './components/errors';
+import { Header, Logout, Token, Home } from './components';
 import { Error } from './components/errors';
 import './App.css';
 
@@ -34,7 +33,7 @@ const App = () => {
 					<Route path="/404" render={() => <Error status={404} message='Not Found' />} />
 					<Route path="/405" render={() => <Error status={405} message='Method Not Allowed' />} />
 					<Route path="/token" component={Token} />
-					<Route path="/" />
+					<Route exact path="/" component={Home} />
 				</>
 			</Switch>
 		</>
