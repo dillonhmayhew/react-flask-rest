@@ -27,7 +27,7 @@ const Logout = () => {
             <div id='display'>
                 <div className='text'>
                     <h1>redirecting</h1><br />
-                    <h1 className='animate-ellipsis'></h1>
+                    <h1 className='animate-ellipsis'> </h1>
                     <br />
                     <h1 style={{fontSize: '100px'}}>{timer}</h1>
                 </div>
