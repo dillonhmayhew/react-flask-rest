@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import Button from 'react-bootstrap/Button';
-import { UserForm } from './forms';
+import { TaskForm } from './';
 
 // global list of original row indices of results
 // this allows me to keep track of what task is where in my table
 // window.rowIndices = [];
 
-const Users = (props) => {
-    const [users, setUsers] = useState([]);
+const Tasks = (props) => {
+    const [tasks, setTasks] = useState([]);
 	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
@@ -35,7 +35,7 @@ const Users = (props) => {
 	
 	// GET data from API
 	useEffect(() => {
-		fetch(`/api/users`, {
+		fetch(`/api/tasks`, {
 			method: 'GET'
 		})
 		.then(res => res.json())
@@ -43,7 +43,8 @@ const Users = (props) => {
 			if (data.error) {
 				setErrorStatus(data.status);
 			} else {
-				setUsers(data.users);
+                data.tasks.forEach((task) => task.done = String(task.done));
+				setTasks(data.tasks);
 				setCreated(false);
 				setUpdated(false);
 				setDeleted(false);
@@ -51,10 +52,10 @@ const Users = (props) => {
 		});
 	}, [created, updated, deleted]);
 	
-	// DELETE USER
+	// DELETE Task
 	const deleteTask = (e, id) => {
 		e.preventDefault();
-		fetch(`/api/users/${id}`, {
+		fetch(`/api/tasks/${id}`, {
 			method: 'DELETE'
 		})
 		.then(res => res.json())
@@ -68,30 +69,56 @@ const Users = (props) => {
 	}
 	 
 	/* PREPROCCESSING */
-	// compile dict of Props, so that the correct Props can be supplied to the UserForm
-	// {userID: userObj}
+	// compile dict of Props, so that the correct Props can be supplied to the TaskForm
+	// {taskID: taskObj}
     // const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([key, value], i) => [key, fn(value, key, i)]));
     const formPropsDict = {};
-	users.forEach((user) => formPropsDict[String(user.id)] = user);
+	tasks.forEach((task) => formPropsDict[String(task.id)] = task);
 
 	// generate TaskForm with correct props
 	const renderUpdateForm = () => {
 		if (showModal.open) {
-			return <UserForm {...formPropsDict[showModal.selected]} {...formProps} />
+			return <TaskForm {...formPropsDict[showModal.selected]} {...formProps} />
 		}
 	}
 	const renderCreateForm = () => {
 		if (showCreate) {
-			return <UserForm {...formProps} create={true} />
+			return <TaskForm {...formProps} create={true} />
 		}
 	}
+
+	// // user clicked table head to sort, so reset list of row indices to empty
+	// window.onload = () => {
+	// 	const headers = document.getElementsByClassName('rt-th');
+	// 	for (var i=0; i<3; i++) {
+	// 		headers[i].addEventListener('click', () => {
+	// 			window.rowIndices = [];
+	// 		});
+	// 	}
+	// }
+	// // set row indices list to keep track of sorting
+	// const getRowIndices = (state, rowInfo) => {
+	// 	if(rowInfo) {
+	// 		window.rowIndices.push(rowInfo.index);
+	// 	}
+	// 	return {}
+	// }
 	
 	// counter for button ids to correspond with correct task
     var c = 0;
 	const columns = [
-        {
-			Header: "ID",
-			accessor: "id",
+		{
+			Header: "Title",
+			accessor: "title",
+			sortable: false,
+			width: 250,
+			style:{
+				textAlign: "center"
+			},
+		},
+		{
+			Header: "Done",
+			accessor: "done",
 			width: 100,
 			sortable: false,
 			resizable: false,
@@ -100,27 +127,8 @@ const Users = (props) => {
 			},
 		},
 		{
-			Header: "Username",
-			accessor: "username",
-			// width: 250,
-			sortable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Email",
-			accessor: "email",
-			// width: 100,
-			sortable: false,
-			resizable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Tasks",
-			accessor: "tasks",
+			Header: "Description",
+			accessor: "description",
 			sortable: false,
 			resizable: false,
 			style:{
@@ -129,21 +137,22 @@ const Users = (props) => {
 		},
 		{
 			Header: "Actions",
-			filterable: false,
 			sortable: false,
 			resizable: false,
 			style:{
 				textAlign: "center"
-			},
+            },
             Cell: () => {
-                return (
-                    <>
-                    <Button id={users[c%users.length].id} variant='outline-dark' onClick={(e) => {
+                return (	
+					// tasks[window.rowIndices[c%tasks.length]].id
+					// tasks[c%tasks.length].id
+                    <> 
+                    <Button id={tasks[c%tasks.length].id} variant='outline-dark' onClick={(e) => {
 						// console.log(window.rowIndices);
                         openUpdateModal(e.target.id);
                     }}
                     >Edit</Button>
-                    <Button id={users[c++%users.length].id} variant='outline-light' onClick={(e)=> {
+                    <Button id={tasks[c++%tasks.length].id} variant='outline-light' onClick={(e)=> {
 						deleteTask(e, e.target.id);
                     }}
                     >Delete</Button>
@@ -164,12 +173,12 @@ const Users = (props) => {
 			<Button variant='dark' onClick={() => {
 				openCreateModal();
 			}} id='create'
-			>Create User</Button>
+			>Create Task</Button>
 			{renderCreateForm()}
 			{renderUpdateForm()}
 			<ReactTable 
 			columns={columns} 
-			data={users}
+			data={tasks}
 			showPagination={false}
 			// getTrProps={getRowIndices}
 			// defaultPageSize={100}
@@ -178,4 +187,4 @@ const Users = (props) => {
 	);
 }
 
-export default Users;
+export default Tasks;

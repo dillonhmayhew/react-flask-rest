@@ -1,22 +1,9 @@
 import React from 'react';
-import {
-	Route,
-	Switch
-} from 'react-router-dom';
-import {
-	Task,
-	Tasks,
-	User,
-	Users,
-	Header,
-	Logout
-} from './components';
-import { 
-	BadRequest,
-	Unauthorized,
-	NotFound,
-	MethodNotAllowed
-} from './components/errors';
+import { Route, Switch } from 'react-router-dom';
+import { Task, Tasks } from './components/tasks'
+import { User, Users } from './components/users'
+import { Header, Logout } from './components';
+import { BadRequest, Unauthorized, NotFound, MethodNotAllowed } from './components/errors';
 import './App.css';
 
 

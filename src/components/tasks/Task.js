@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import Button from 'react-bootstrap/Button';
-import { UserForm } from './forms';
+import { TaskForm } from './';
 
-const User = (props) => {
-	const {params: {userID}} = props.match;
-    
-	const [user, setUser] = useState([{}]);
+const Task = (props) => {
+	const {params: {taskID}} = props.match;
+	
+	const [task, setTask] = useState([{}]);
 	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
@@ -16,20 +16,21 @@ const User = (props) => {
 	const handleUpdate = () => setUpdated(true);
 	const childErrorStatus = (err) => setErrorStatus(err)
 	const openUpdateModal = () => setShowModal(true);
-    const closeUpdateModal = () => setShowModal(false);
+	const closeUpdateModal = () => setShowModal(false);
 		
 	const formProps = {
-        id: userID,
-		username: user[0].username, 
-		email: user[0].email, 
+		id: taskID,
+		title: task[0].title, 
+		done: task[0].done, 
+		description: task[0].description,
 		updateHandler: handleUpdate,
 		errorHandler: childErrorStatus,
-        closeUpdateHandler: closeUpdateModal
+		closeUpdateHandler: closeUpdateModal
 	}
 	
 	// GET data from API
 	useEffect(() => {
-		fetch(`/api/users/${userID}`, {
+		fetch(`/api/tasks/${taskID}`, {
 			method: 'GET'
 		})
 		.then(res => res.json())
@@ -37,17 +38,18 @@ const User = (props) => {
 			if (data.error) {
 				setErrorStatus(data.status);
 			} else {
-				setUser([data.user]);
+				data.task.done = String(data.task.done);
+				setTask([data.task]);
 				setUpdated(false);
 				setDeleted(false);
 			}
 		});
-	}, [userID, updated, deleted]);
+	}, [taskID, updated, deleted]);
 	
-	// DELETE USER
-	const deleteUser = (e) => {
+	// DELETE Task
+	const deleteTask = (e) => {
 		e.preventDefault();
-		fetch(`/api/users/${userID}`, {
+		fetch(`/api/tasks/${taskID}`, {
 			method: 'DELETE'
 		})
 		.then(res => res.json())
@@ -61,9 +63,18 @@ const User = (props) => {
 	}
 	
 	const columns = [
-        {
-			Header: "ID",
-			accessor: "id",
+		{
+			Header: "Title",
+			accessor: "title",
+			width: 250,
+			sortable: false,
+			style:{
+				textAlign: "center"
+			},
+		},
+		{
+			Header: "Done",
+			accessor: "done",
 			width: 100,
 			sortable: false,
 			resizable: false,
@@ -72,27 +83,8 @@ const User = (props) => {
 			},
 		},
 		{
-			Header: "Username",
-			accessor: "username",
-			// width: 250,
-			sortable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Email",
-			accessor: "email",
-			// width: 100,
-			sortable: false,
-			resizable: false,
-			style:{
-				textAlign: "center"
-			},
-		},
-		{
-			Header: "Tasks",
-			accessor: "tasks",
+			Header: "Description",
+			accessor: "description",
 			sortable: false,
 			resizable: false,
 			style:{
@@ -115,7 +107,7 @@ const User = (props) => {
 					}}
 					>Edit</Button>
 					<Button variant='outline-light' onClick={(e)=> {
-						deleteUser(e);
+						deleteTask(e);
 					}}
 					>Delete</Button>
 					</>
@@ -128,19 +120,19 @@ const User = (props) => {
 	]
 	
 	if (errorStatus) window.location.pathname = `/${errorStatus}`;
-	if (deleted) window.location.pathname = '/users';
+	if (deleted) window.location.pathname = '/tasks';
 			
 	return (
 		<>
-			{showModal && <UserForm {...formProps} />}
+			{showModal && <TaskForm {...formProps} />}
 			<ReactTable 
 			columns={columns} 
-			data={user}
+			data={task}
 			showPagination={false}
-			defaultPageSize={user.length}
+			defaultPageSize={task.length}
 			/>
 		</>
 	);
 }
 
-export default User;
+export default Task;
