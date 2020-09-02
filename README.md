@@ -21,3 +21,57 @@ You will need to install these three packages on your machine:
 * [Python3](https://python.org/)
 
 # Installation
+
+**Clone the repository:**
+
+`>git clone https://github.com/dillonhmayhew/flask-react-rest.git`
+
+**Install the requirements for the React portion of the project:**
+
+`>yarn install`
+
+**While those packages are being installed, go ahead and open another terminal in the project directory:**
+
+**In your new terminal, go to the directory of the of the API:**
+
+`>cd api`
+
+**Use Python 3's built in virtual environment package:** `python3 -m [module-name] [name of virtual environment]`
+
+On **Linux:**
+
+`>python3 -m venv venv` **OR**
+
+On **Windows:**
+
+`>python -m venv venv`
+
+**Note:** If you are using Ubuntu/Debian, you may have to install this as a separate distro package:
+
+`>sudo apt-get install python3-venv`
+
+`>python3 -m venv venv`
+
+**Activating you're new virtual environment:**
+
+On **Linux:**
+
+`>. venv/bin/activate` **OR**
+
+On **Windows:**
+
+`>venv\Scripts\activate`
+
+**Install the requirements of the API:**
+
+`(venv) >pip install -r requirements.txt`
+
+**After both sets of requirements have been installed, use one terminal to start the API:**
+
+`>yarn start-api`
+
+**and the other to start React:**
+
+`>yarn start`
+
+`yarn start` **should open your default browser on http://localhost:3000 and you will be presented with the home page:**
