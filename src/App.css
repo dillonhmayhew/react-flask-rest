@@ -10,3 +10,59 @@ Button#create {
   display: flex;
   margin-left: auto;
 }
+
+#display {
+    display: table;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+}
+
+.text {
+	  display: table-cell;
+	  vertical-align: middle;
+}
+
+.text h1 {
+		font-size: 50px;
+		font-family: 'Courier', sans-serif;
+		color: #888;
+	  display: inline-block;
+	  padding-right: 12px;
+}
+
+h1.animate-type {
+    animation: type .5s alternate infinite;
+}
+
+h1.animate-ellipsis:after {
+	font-family: 'Times New Roman';
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 1200ms infinite;      
+  animation: ellipsis steps(4,end) 1200ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes type {
+	from {
+		box-shadow: inset -3px 0px 0px #888;
+	}
+	to {
+		box-shadow: inset -3px 0px 0px transparent;
+	}
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em;    
+  }
+}

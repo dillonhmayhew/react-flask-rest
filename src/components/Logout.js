@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 const Logout = () => {
     const [logout, setLogout] = useState(false);
-    const [timer, setTimer] = useState(3)
+    const [timer, setTimer] = useState(2)
 
     useEffect(() => {
         fetch('/api/logout', {
@@ -12,7 +12,7 @@ const Logout = () => {
         .then(res => res.json())
         .then(data => {
             if (data.status === 401) {
-                setTimeout(() => setLogout(true), 3000);
+                setTimeout(() => setLogout(true), 2000);
             }
         })
     }, []);
@@ -24,15 +24,12 @@ const Logout = () => {
     return (
         <>
             {logout ? <Redirect to='/home' /> :
-            <div id="main">
-                <div className="err">
-                    <h1>You Have Successfully Logged Out</h1>
+            <div id='display'>
+                <div className='text'>
+                    <h1>redirecting</h1><br />
+                    <h1 className='animate-ellipsis'></h1>
                     <br />
-                    <br />
-                    <br />
-                    <h1>You will be redirected in</h1>
-                    <br />
-                    <h1>{timer}</h1>
+                    <h1 style={{fontSize: '100px'}}>{timer}</h1>
                 </div>
             </div>
             }
