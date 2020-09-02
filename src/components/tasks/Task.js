@@ -6,15 +6,14 @@ import { TaskForm } from './';
 
 const Task = (props) => {
 	const {params: {taskID}} = props.match;
+	const { errorHandler } = props;
 	
 	const [task, setTask] = useState([{}]);
-	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	
 	const handleUpdate = () => setUpdated(true);
-	const childErrorStatus = (err) => setErrorStatus(err)
 	const openUpdateModal = () => setShowModal(true);
 	const closeUpdateModal = () => setShowModal(false);
 		
@@ -24,7 +23,6 @@ const Task = (props) => {
 		done: task[0].done, 
 		description: task[0].description,
 		updateHandler: handleUpdate,
-		errorHandler: childErrorStatus,
 		closeUpdateHandler: closeUpdateModal
 	}
 	
@@ -36,7 +34,7 @@ const Task = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				data.task.done = String(data.task.done);
 				setTask([data.task]);
@@ -44,7 +42,7 @@ const Task = (props) => {
 				setDeleted(false);
 			}
 		});
-	}, [taskID, updated, deleted]);
+	}, [taskID, updated, deleted, errorHandler]);
 	
 	// DELETE Task
 	const deleteTask = (e) => {
@@ -55,7 +53,7 @@ const Task = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				setDeleted(data.result);
 			}
@@ -119,12 +117,11 @@ const Task = (props) => {
 		}
 	]
 	
-	if (errorStatus) window.location.pathname = `/${errorStatus}`;
 	if (deleted) window.location.pathname = '/tasks';
 			
 	return (
 		<>
-			{showModal && <TaskForm {...formProps} />}
+			{showModal && <TaskForm {...formProps} {...props} />}
 			<ReactTable 
 			columns={columns} 
 			data={task}

@@ -6,15 +6,14 @@ import { UserForm } from './';
 
 const User = (props) => {
 	const {params: {userID}} = props.match;
+	const { errorHandler } = props;
     
 	const [user, setUser] = useState([{}]);
-	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	
 	const handleUpdate = () => setUpdated(true);
-	const childErrorStatus = (err) => setErrorStatus(err)
 	const openUpdateModal = () => setShowModal(true);
     const closeUpdateModal = () => setShowModal(false);
 		
@@ -23,7 +22,6 @@ const User = (props) => {
 		username: user[0].username, 
 		email: user[0].email, 
 		updateHandler: handleUpdate,
-		errorHandler: childErrorStatus,
         closeUpdateHandler: closeUpdateModal
 	}
 	
@@ -35,14 +33,14 @@ const User = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				setUser([data.user]);
 				setUpdated(false);
 				setDeleted(false);
 			}
 		});
-	}, [userID, updated, deleted]);
+	}, [userID, updated, deleted, errorHandler]);
 	
 	// DELETE USER
 	const deleteUser = (e) => {
@@ -53,7 +51,7 @@ const User = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				setDeleted(data.result);
 			}
@@ -126,13 +124,12 @@ const User = (props) => {
 			minWidth: 150
 		}
 	]
-	
-	if (errorStatus) window.location.pathname = `/${errorStatus}`;
+
 	if (deleted) window.location.pathname = '/users';
 			
 	return (
 		<>
-			{showModal && <UserForm {...formProps} />}
+			{showModal && <UserForm {...formProps} {...props} />}
 			<ReactTable 
 			columns={columns} 
 			data={user}

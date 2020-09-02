@@ -9,8 +9,9 @@ import { TaskForm } from './';
 // window.rowIndices = [];
 
 const Tasks = (props) => {
+	const { errorHandler } = props;
+
     const [tasks, setTasks] = useState([]);
-	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
 	const [created, setCreated] = useState(false);
@@ -19,7 +20,6 @@ const Tasks = (props) => {
 	
 	const handleCreate = () => setCreated(true);
 	const handleUpdate = () => setUpdated(true);
-	const childErrorStatus = (err) => setErrorStatus(err)
 	const openUpdateModal = (i) => setShowModal({open: true, selected: i});
 	const closeUpdateModal = () => setShowModal({open: false, selected: ''});
 	const openCreateModal = () => setShowCreate(true);
@@ -28,7 +28,6 @@ const Tasks = (props) => {
 	const formProps = {
 		createHandler: handleCreate,
 		updateHandler: handleUpdate,
-		errorHandler: childErrorStatus,
 		closeUpdateHandler: closeUpdateModal,
 		closeCreateHandler: closeCreateModal
 	}
@@ -41,7 +40,7 @@ const Tasks = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
                 data.tasks.forEach((task) => task.done = String(task.done));
 				setTasks(data.tasks);
@@ -50,7 +49,7 @@ const Tasks = (props) => {
 				setDeleted(false);
 			}
 		});
-	}, [created, updated, deleted]);
+	}, [created, updated, deleted, errorHandler]);
 	
 	// DELETE Task
 	const deleteTask = (e, id) => {
@@ -61,7 +60,7 @@ const Tasks = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				setDeleted(data.result);
 			}
@@ -78,12 +77,12 @@ const Tasks = (props) => {
 	// generate TaskForm with correct props
 	const renderUpdateForm = () => {
 		if (showModal.open) {
-			return <TaskForm {...formPropsDict[showModal.selected]} {...formProps} />
+			return <TaskForm {...formPropsDict[showModal.selected]} {...formProps} {...props} />
 		}
 	}
 	const renderCreateForm = () => {
 		if (showCreate) {
-			return <TaskForm {...formProps} create={true} />
+			return <TaskForm {...formProps} create={true} {...props} />
 		}
 	}
 
@@ -164,9 +163,6 @@ const Tasks = (props) => {
             minWidth: 150
         }
 	]
-
-	if (errorStatus) window.location.pathname = `/${errorStatus}`;
-	// if (created) window.location.reload();
 			
 	return (
 		<>

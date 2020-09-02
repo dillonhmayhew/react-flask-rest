@@ -9,8 +9,9 @@ import { UserForm } from './';
 // window.rowIndices = [];
 
 const Users = (props) => {
+	const { errorHandler } = props;
+
     const [users, setUsers] = useState([]);
-	const [errorStatus, setErrorStatus] = useState(0);
 	const [deleted, setDeleted] = useState(false);
 	const [updated, setUpdated] = useState(false);
 	const [created, setCreated] = useState(false);
@@ -19,7 +20,6 @@ const Users = (props) => {
 	
 	const handleCreate = () => setCreated(true);
 	const handleUpdate = () => setUpdated(true);
-	const childErrorStatus = (err) => setErrorStatus(err)
 	const openUpdateModal = (i) => setShowModal({open: true, selected: i});
 	const closeUpdateModal = () => setShowModal({open: false, selected: ''});
 	const openCreateModal = () => setShowCreate(true);
@@ -28,7 +28,6 @@ const Users = (props) => {
 	const formProps = {
 		createHandler: handleCreate,
 		updateHandler: handleUpdate,
-		errorHandler: childErrorStatus,
 		closeUpdateHandler: closeUpdateModal,
 		closeCreateHandler: closeCreateModal
 	}
@@ -41,7 +40,7 @@ const Users = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				setUsers(data.users);
 				setCreated(false);
@@ -49,7 +48,7 @@ const Users = (props) => {
 				setDeleted(false);
 			}
 		});
-	}, [created, updated, deleted]);
+	}, [created, updated, deleted, errorHandler]);
 	
 	// DELETE USER
 	const deleteTask = (e, id) => {
@@ -60,7 +59,7 @@ const Users = (props) => {
 		.then(res => res.json())
 		.then(data => {
 			if (data.error) {
-				setErrorStatus(data.status);
+				errorHandler(data.status);
 			} else {
 				setDeleted(data.result);
 			}
@@ -77,12 +76,12 @@ const Users = (props) => {
 	// generate TaskForm with correct props
 	const renderUpdateForm = () => {
 		if (showModal.open) {
-			return <UserForm {...formPropsDict[showModal.selected]} {...formProps} />
+			return <UserForm {...formPropsDict[showModal.selected]} {...formProps} {...props} />
 		}
 	}
 	const renderCreateForm = () => {
 		if (showCreate) {
-			return <UserForm {...formProps} create={true} />
+			return <UserForm {...formProps} create={true} {...props} />
 		}
 	}
 	
@@ -156,7 +155,7 @@ const Users = (props) => {
         }
 	]
 
-	if (errorStatus) window.location.pathname = `/${errorStatus}`;
+	
 	// if (created) window.location.reload();
 			
 	return (
