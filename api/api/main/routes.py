@@ -19,7 +19,6 @@ def get_auth_token():
 
 
 @bp.route('/api/users', methods=['GET'])
-@auth_.login_required
 def get_users():
     users = User.serialize_list(User.query.all())
 
