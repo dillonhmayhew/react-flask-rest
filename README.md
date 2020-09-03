@@ -110,7 +110,7 @@ In HTTP authentication, there is no concept of sessions or logging in or out. I 
 
 ![Logout](https://github.com/dillonhmayhew/react-flask-rest/blob/master/logout.gif)
 
-## Token-based Authentication
+## Token-Based Authentication
 
 Although it's unlikely anyone actually uses HTTP authentication in production, I have found it convenient in making this project maintain the principles of [REST](https://restfulapi.net/). It would be in anyone's best interest to **NOT** have their credentials sent over every HTTP request. To use token-based authentication, simply click the 'Token' link on the Navbar. In the background, this link triggers the simulated logout mentioned above, encouraging you to use the generated [PyJWT](https://github.com/jpadilla/pyjwt) token as the username for your next login.
 
