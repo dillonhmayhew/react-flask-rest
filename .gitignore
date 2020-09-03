@@ -36,5 +36,5 @@ __pycache__/
 
 .idea/
 .vscode
-
+*.gif
 .env
