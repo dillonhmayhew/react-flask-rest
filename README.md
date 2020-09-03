@@ -80,13 +80,13 @@ On **Windows:**
 
 `yarn start` **should open your default browser on http://localhost:3000 and you will be presented with the home page.**
 
-## Demo
+# Demo
 
-# Create User
+## Create User
 
 Navigate to the 'Users' link on the Navbar then click 'Create User'.
 
-# "Logging in"
+## "Logging In"
 
 Authorization is done through basic HTTP authentication. Although you may only have to type your username and password once, these credentials are actually sent by the browser on every request to the server. To login, just click on the 'Tasks' link on the Navbar:
 
@@ -96,10 +96,16 @@ All the functionality is pretty intuitive and thanks to React's stateful nature,
 
 ![Create](https://github.com/dillonhmayhew/react-flask-rest/blob/master/create.gif)
 
-# "Logging out"
+## "Logging Out"
 
-# Token-based authentication
+In HTTP authentication, there is no concept of sessions or logging in or out. I have a 'Logout' link that simulates a logout by fetching a URL from my API that responds with a 401 error status. This error causes the browser to request credentials on the next request to a URL that requires authentication. **Note:** This works in the latest versions of Chrome and has not been tested on other browsers.
+
+![Logout](https://github.com/dillonhmayhew/react-flask-rest/blob/master/logout.gif)
+
+## Token-based Authentication
 
 Although it's unlikely anyone actually uses HTTP authentication in production, I have found it convenient in making this project maintain the principles of [REST](https://restfulapi.net/). It would be in anyone's best interest to **NOT** have their credentials sent over every HTTP request. To use token-based authentication, simply click the 'Token' link on the Navbar. In the background, this link triggers the simulated logout mentioned above, encouraging you to use the generated [PyJWT](https://github.com/jpadilla/pyjwt) token as the username for your next login.
 
 ![Token](https://github.com/dillonhmayhew/react-flask-rest/blob/master/token.gif)
+
+Thank you for looking!
