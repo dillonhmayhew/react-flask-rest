@@ -98,6 +98,12 @@ All the functionality is pretty intuitive and thanks to React's stateful nature,
 
 ![Create](https://github.com/dillonhmayhew/react-flask-rest/blob/master/create.gif)
 
+## Delete
+
+I think [react-bootstrap](https://react-bootstrap.github.io/)'s `outline-light` button variant was a perfect fit for a 'Delete' button with no confirmation warning. It's discrete and basically invisible on a white background until hover:
+
+![Delete](https://github.com/dillonhmayhew/react-flask-rest/blob/master/delete.gif)
+
 ## "Logging Out"
 
 In HTTP authentication, there is no concept of sessions or logging in or out. I have a 'Logout' link that simulates a logout by fetching a URL from my API that responds with a 401 error status. This error causes the browser to request credentials on the next request to a URL that requires authentication. **Note:** This works in the latest versions of Chrome and has not been tested on other browsers.
