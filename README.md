@@ -4,7 +4,7 @@
 
 ![Home](https://github.com/dillonhmayhew/react-flask-rest/blob/master/home.gif)
 
-This is a **React.js** front-end I built for the RESTful API I created with Flask. A full demo and explanation of the API can be found [here](https://github.com/dillonhmayhew/todo-rest-api). Learning React.js and understanding its component-based structure and dependencies on *state* made this project one of funnest experiences for me. React is beautifully structured and this will certainly not be my last project with it.
+This is a **React.js** front-end I built for the RESTful API I created with Flask. A full demo and explanation of the API can be found [here](https://github.com/dillonhmayhew/todo-rest-api). Learning React.js and understanding its component-based structure and dependencies on *state* made this project one of funnest learning opportunities for me. React is beautifully structured and this will certainly not be my last project with it.
 
 With only minor changes to my original API, React made this CRUD UI project almost seamless. This project contains all the functionality of my original API and is served through `react-table`, `react-router-dom` and of course `react-bootstrap` and `bootstrap`.
 
