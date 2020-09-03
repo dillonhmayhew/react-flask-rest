@@ -23,7 +23,7 @@ const Logout = () => {
 
     return (
         <>
-            {logout ? <Redirect to='/home' /> :
+            {logout ? <Redirect to='/' /> :
             <div id='display'>
                 <div className='text'>
                     <h1>redirecting</h1><br />
