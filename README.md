@@ -1,8 +1,10 @@
-# react-flask-rest 
+# react-flask-rest
+
+![Home](https://github.com/dillonhmayhew/react-flask-rest/blob/master/home.gif)
 
 This is a **React.js** front-end I built for the RESTful API I created with Flask. A full demo and explanation of the API can be found [here](https://github.com/dillonhmayhew/todo-rest-api). Learning React.js and understanding its component-based structure and dependencies on *state* made this project one of funnest experiences for me. React is beautifully structured and this will certainly not be my last project with it.
 
-With only minor changes to my original API, React made this project almost seamless. This project contains all the functionality of my original API and is served through `react-table`, `react-router-dom` and of course `react-bootstrap` and `bootstrap`.
+With only minor changes to my original API, React made this CRUD UI project almost seamless. This project contains all the functionality of my original API and is served through `react-table`, `react-router-dom` and of course `react-bootstrap` and `bootstrap`.
 
 ## How it works?
 
@@ -76,6 +78,28 @@ On **Windows:**
 
 `>yarn start`
 
-`yarn start` **should open your default browser on http://localhost:3000 and you will be presented with the home page:**
+`yarn start` **should open your default browser on http://localhost:3000 and you will be presented with the home page.**
 
 ## Demo
+
+# Create User
+
+Navigate to the 'Users' link on the Navbar then click 'Create User'.
+
+# "Logging in"
+
+Authorization is done through basic HTTP authentication. Although you may only have to type your username and password once, these credentials are actually sent by the browser on every request to the server. To login, just click on the 'Tasks' link on the Navbar:
+
+![Login](https://github.com/dillonhmayhew/react-flask-rest/blob/master/login.gif)
+
+All the functionality is pretty intuitive and thanks to React's stateful nature, changes are made without have to reload the webpage. Users are created on the 'Users' page, Tasks are created on the 'Tasks' page:
+
+![Create](https://github.com/dillonhmayhew/react-flask-rest/blob/master/create.gif)
+
+# "Logging out"
+
+# Token-based authentication
+
+Although it's unlikely anyone actually uses HTTP authentication in production, I have found it convenient in making this project maintain the principles of [REST](https://restfulapi.net/). It would be in anyone's best interest to **NOT** have their credentials sent over every HTTP request. To use token-based authentication, simply click the 'Token' link on the Navbar. In the background, this link triggers the simulated logout mentioned above, encouraging you to use the generated [PyJWT](https://github.com/jpadilla/pyjwt) token as the username for your next login.
+
+![Token](https://github.com/dillonhmayhew/react-flask-rest/blob/master/token.gif)
