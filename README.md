@@ -94,7 +94,7 @@ Authorization is done through basic HTTP authentication. Although you may only h
 
 ![Login](https://github.com/dillonhmayhew/react-flask-rest/blob/master/login.gif)
 
-All the functionality is pretty intuitive and thanks to React's stateful nature, changes are made without have to reload the webpage. Users are created on the 'Users' page, Tasks are created on the 'Tasks' page:
+All the functionality is pretty intuitive and thanks to React's stateful nature, changes are made without having to reload the webpage. Users are created on the 'Users' page, Tasks are created on the 'Tasks' page:
 
 ![Create](https://github.com/dillonhmayhew/react-flask-rest/blob/master/create.gif)
 
