@@ -1,4 +1,4 @@
-# react-flask-rest
+# react-flask-rest CRUD Application
 
 [Click](https://github.com/dillonhmayhew/todo-rest-api) here to see the RESTful API this application draws data from!
 
